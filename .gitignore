@@ -31,7 +31,7 @@ ui_*.h
 *.qm
 *.qmlc
 *.jsc
-
+.qtcreator
 # Linux backup and temp files
 *~
 *.swp
