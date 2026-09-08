@@ -1,0 +1,40 @@
+# Qt Creator user files
+/*.pro.user
+/*.pro.user.*
+/CMakeLists.txt.user*
+*.creator.user
+*.autosave
+
+# Build directories (adjust if you use a custom build folder name)
+/build-*/
+/cmake-build-*/
+build/
+bin/
+lib/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+
+# Qt generated files
+/.qmake.stash
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qm
+*.qmlc
+*.jsc
+
+# Linux backup and temp files
+*~
+*.swp
+*.swo
+.DS_Store
+
