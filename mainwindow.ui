@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>971</width>
-    <height>693</height>
+    <width>997</width>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit"/>
+         <widget class="QLineEdit" name="fileMaskLe"/>
         </item>
        </layout>
       </item>
@@ -44,7 +44,18 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox"/>
+         <widget class="QComboBox" name="outputFileActionCmb">
+          <item>
+           <property name="text">
+            <string>Удалять</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Сохранять</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>
@@ -58,7 +69,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_2"/>
+         <widget class="QLineEdit" name="uotputPathLe"/>
         </item>
        </layout>
       </item>
@@ -72,7 +83,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_3"/>
+         <widget class="QLineEdit" name="inputPathLe"/>
         </item>
        </layout>
       </item>
@@ -86,7 +97,18 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2"/>
+         <widget class="QComboBox" name="repeatingFileCmb">
+          <item>
+           <property name="text">
+            <string>Перезаписывать</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Модифицировать название</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>
@@ -100,7 +122,18 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_3"/>
+         <widget class="QComboBox" name="workFormatCmb">
+          <item>
+           <property name="text">
+            <string>Разовые запуск</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Периодическое срабатывание</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
       </item>
@@ -114,7 +147,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QTimeEdit" name="timeEdit"/>
+         <widget class="QTimeEdit" name="repeatTimeTe"/>
         </item>
        </layout>
       </item>
@@ -128,7 +161,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="lineEdit_4"/>
+         <widget class="QLineEdit" name="modificationValueLe"/>
         </item>
        </layout>
       </item>
@@ -137,9 +170,9 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="startProcessBtn">
         <property name="text">
-         <string>PushButton</string>
+         <string>Начать</string>
         </property>
        </widget>
       </item>
@@ -152,7 +185,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>971</width>
+     <width>997</width>
      <height>24</height>
     </rect>
    </property>
