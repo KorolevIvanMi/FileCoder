@@ -27,7 +27,7 @@ public:
 private:
     Settings coder_settings;
     QMap<QString ,quint64> files_offset;
-    bool isPaused;
+    bool isPaused = false;
     QList<QFile> files_to_code;
 
 

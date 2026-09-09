@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "filecoder.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,5 +22,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    FileCoder* file_coder;
 };
 #endif // MAINWINDOW_H

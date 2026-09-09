@@ -44,7 +44,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="outputFileActionCmb">
+         <widget class="QComboBox" name="inputFileActionCmb">
           <item>
            <property name="text">
             <string>Удалять</string>
@@ -69,7 +69,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="uotputPathLe"/>
+         <widget class="QLineEdit" name="outputPathLe"/>
         </item>
        </layout>
       </item>
