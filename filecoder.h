@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QList>
 #include <QFile>
+#include <QDir>
 
 #include "settings.h"
 
@@ -13,6 +14,14 @@ class FileCoder : public QObject
     Q_OBJECT
 public:
     explicit FileCoder(QObject *parent = nullptr);
+
+    void saveSettigs();
+    void findFiles(QDir files_dir);
+    void startProcessing();
+    void stopProcessing();
+    void resumeProccesing();
+    void proccesFile();
+
 
 private:
     Settings coder_settings;
