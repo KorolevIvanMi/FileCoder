@@ -38,7 +38,7 @@ void MainWindow::StartWork(){
     bool repeat_coding_files = ui->workFormatCmb->currentIndex();
     QTime repeat_timer = ui->repeatTimeTe->time();
     QString string_code_mask = ui->modificationValueLe->text();
-    quint64 hex_code_mask = string_code_mask.toInt(nullptr, 16);
+    quint64 hex_code_mask = string_code_mask.toULongLong(nullptr, 16);
 
     qDebug() << "Маска файлов: " << file_mask
              << "\nДействие с входными файлами: " << input_files_mode
