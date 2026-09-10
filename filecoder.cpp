@@ -1,5 +1,7 @@
 #include "filecoder.h"
 
+#include "QFile"
+
 FileCoder::FileCoder(QObject *parent)
     : QObject{parent}
 {}
@@ -13,4 +15,46 @@ void FileCoder::saveSettigs(const QString& file_mask, qint16 input_files_mode, c
     this->coder_settings.repeat_files_names_mode = repeat_files_names_mode;
     this->coder_settings.repeat_timer = repeat_timer;
     this->coder_settings.hex_code_mask = hex_code_mask;
+}
+
+void FileCoder::findFiles(QDir files_dir){
+
+    if (coder_settings.file_mask != ""){
+        QStringList filter;
+        filter << coder_settings.file_mask;
+        files_dir.setNameFilters(filter);
+    }
+    QFileInfoList files_dirs = files_dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    QString dir = files_dir.absolutePath();
+
+    for (const QFileInfo &info : std::as_const(files_dirs)){
+
+        if (info.isFile()){
+            files_to_code.append(info.absoluteFilePath());
+            qDebug() << "Файл: " << info.fileName();
+        } else {
+            scanDir(info.absoluteFilePath());
+        }
+    }
+
+}
+
+void FileCoder::scanDir(QDir path){
+    if (coder_settings.file_mask != ""){
+        QStringList filter;
+        filter << coder_settings.file_mask;
+        path.setNameFilters(filter);
+    }
+    QFileInfoList files_dirs = path.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    QString dir = path.absolutePath();
+
+    for (const QFileInfo &info : std::as_const(files_dirs)){
+
+        if (info.isFile()){
+            files_to_code.append(info.absoluteFilePath());
+            qDebug() << "Файл: " << info.fileName();
+        } else {
+            scanDir(info.absoluteFilePath());
+        }
+    }
 }

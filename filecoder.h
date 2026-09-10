@@ -22,13 +22,15 @@ public:
     void stopProcessing();
     void resumeProccesing();
     void proccesFile();
+    void scanDir(QDir path);
 
 
 private:
     Settings coder_settings;
     QMap<QString ,quint64> files_offset;
     bool isPaused = false;
-    QList<QFile> files_to_code;
+    QList<QString> files_to_code;
+
 
 
 signals:
