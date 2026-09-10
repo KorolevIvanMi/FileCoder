@@ -9,6 +9,9 @@
 
 #include "settings.h"
 
+#define CHANK_SIZE 1024
+
+
 class FileCoder : public QObject
 {
     Q_OBJECT
@@ -16,13 +19,14 @@ public:
     explicit FileCoder(QObject *parent = nullptr);
 
     void saveSettigs(const QString& file_mask, qint16 input_files_mode, const QDir& output_dir, const QDir& input_dir,
-                     qint16 repeat_files_names_mode, bool repeat_coding_files, QTime repeat_timer, quint64 hex_code_mask);
-    void findFiles(QDir files_dir);
+                     qint16 repeat_files_names_mode, bool repeat_coding_files, QTime repeat_timer, quint64 hex_code_mask); // готово
+    void findFiles(QDir files_dir); // готово
     void startProcessing();
     void stopProcessing();
     void resumeProccesing();
-    void proccesFile();
-    void scanDir(QDir path);
+    void processFile(QString path);
+    void processChank(QByteArray chank);
+    void scanDir(QDir path); // готово
 
 
 private:

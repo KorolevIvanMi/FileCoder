@@ -31,6 +31,7 @@ void FileCoder::findFiles(QDir files_dir){
 
         if (info.isFile()){
             files_to_code.append(info.absoluteFilePath());
+            files_offset[info.absoluteFilePath()] = 0;
             qDebug() << "Файл: " << info.fileName();
         } else {
             scanDir(info.absoluteFilePath());
@@ -52,9 +53,30 @@ void FileCoder::scanDir(QDir path){
 
         if (info.isFile()){
             files_to_code.append(info.absoluteFilePath());
+            files_offset[info.absoluteFilePath()] = 0;
             qDebug() << "Файл: " << info.fileName();
         } else {
             scanDir(info.absoluteFilePath());
         }
     }
+}
+
+void FileCoder::startProcessing(){
+    for(int i = 0; i < files_to_code.size(); i++){
+        processFile(files_to_code[i]);
+    }
+}
+
+void FileCoder::processFile(QString path){
+    // открыть файл
+    // в цикле считывать по чанку, обрабатывать
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly)){
+        qWarning() << "Не удалось открыть файл" << file.errorString();
+    }
+    while (!file.atEnd()){
+        QByteArray chank = file.read(CHANK_SIZE);
+        processChank(chank);
+    }
+    file.close();
 }
