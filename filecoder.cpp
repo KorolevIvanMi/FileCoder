@@ -62,21 +62,39 @@ void FileCoder::scanDir(QDir path){
 }
 
 void FileCoder::startProcessing(){
+    findFiles(coder_settings.input_dir);
     for(int i = 0; i < files_to_code.size(); i++){
         processFile(files_to_code[i]);
     }
 }
 
 void FileCoder::processFile(QString path){
-    // открыть файл
-    // в цикле считывать по чанку, обрабатывать
-    QFile file(path);
-    if (!file.open(QIODevice::ReadOnly)){
-        qWarning() << "Не удалось открыть файл" << file.errorString();
+    QFile inputFile(path);
+    if (!inputFile.open(QIODevice::ReadOnly)){
+        qWarning() << "Не удалось открыть файл" << inputFile.errorString();
     }
-    while (!file.atEnd()){
-        QByteArray chank = file.read(CHANK_SIZE);
-        processChank(chank);
+
+    QFileInfo info(path);
+
+    QString output_path = coder_settings.output_dir.absolutePath() + "/" + info.fileName() + "_codded";
+    qDebug() << "Выходная дерриктория: " << output_path;
+    QFile outputFile(output_path);
+    if(!outputFile.open(QIODevice::WriteOnly)){
+        qWarning() << "Не создать выход:" << outputFile.errorString();
     }
-    file.close();
+
+    while (!inputFile.atEnd()){
+        QByteArray chank = inputFile.read(CHANK_SIZE);
+        QByteArray codded_chunk = processChank(chank);
+
+        if(outputFile.write(codded_chunk) != codded_chunk.size()){
+            qWarning() << "Ошибка записи:" << outputFile.errorString();
+        }
+    }
+    inputFile.close();
+    outputFile.close();
+}
+
+QByteArray FileCoder::processChank(QByteArray chank){
+
 }

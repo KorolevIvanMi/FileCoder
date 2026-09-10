@@ -24,8 +24,8 @@ public:
     void startProcessing();
     void stopProcessing();
     void resumeProccesing();
-    void processFile(QString path);
-    void processChank(QByteArray chank);
+    void processFile(QString path); // готово
+    QByteArray processChank(QByteArray chank);
     void scanDir(QDir path); // готово
 
 
