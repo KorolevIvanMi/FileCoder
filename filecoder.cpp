@@ -1,6 +1,8 @@
 #include "filecoder.h"
 
 #include "QFile"
+#include <QThread>
+#include <QRegularExpression>
 
 FileCoder::FileCoder(QObject *parent)
     : QObject{parent}
@@ -19,17 +21,16 @@ void FileCoder::saveSettigs(const QString& file_mask, qint16 input_files_mode, c
 
 void FileCoder::findFiles(QDir files_dir){
 
-    if (coder_settings.file_mask != ""){
-        QStringList filter;
-        filter << coder_settings.file_mask;
-        files_dir.setNameFilters(filter);
-    }
-    QFileInfoList files_dirs = files_dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    QFileInfoList files_dirs = files_dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::NoSymLinks);
     QString dir = files_dir.absolutePath();
 
     for (const QFileInfo &info : std::as_const(files_dirs)){
 
         if (info.isFile()){
+            if (!coder_settings.file_mask.isEmpty()) {
+                QRegularExpression re(QRegularExpression::wildcardToRegularExpression(coder_settings.file_mask));
+                if (!re.match(info.fileName()).hasMatch()) continue;
+            }
             files_to_code.append(info.absoluteFilePath());
             files_offset[info.absoluteFilePath()] = 0;
             qDebug() << "Файл: " << info.fileName();
@@ -40,18 +41,17 @@ void FileCoder::findFiles(QDir files_dir){
 
 }
 
-void FileCoder::scanDir(QDir path){
-    if (coder_settings.file_mask != ""){
-        QStringList filter;
-        filter << coder_settings.file_mask;
-        path.setNameFilters(filter);
-    }
-    QFileInfoList files_dirs = path.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
-    QString dir = path.absolutePath();
+void FileCoder::scanDir(QDir files_dir){
+    QFileInfoList files_dirs = files_dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::NoSymLinks);
+    QString dir = files_dir.absolutePath();
 
     for (const QFileInfo &info : std::as_const(files_dirs)){
 
         if (info.isFile()){
+            if (!coder_settings.file_mask.isEmpty()) {
+                QRegularExpression re(QRegularExpression::wildcardToRegularExpression(coder_settings.file_mask));
+                if (!re.match(info.fileName()).hasMatch()) continue;
+            }
             files_to_code.append(info.absoluteFilePath());
             files_offset[info.absoluteFilePath()] = 0;
             qDebug() << "Файл: " << info.fileName();
@@ -62,11 +62,16 @@ void FileCoder::scanDir(QDir path){
 }
 
 void FileCoder::startProcessing(){
+    files_to_code.clear();
+    files_offset.clear();
+    isPaused = false;
+
+    // QThread::msleep(5000);
     findFiles(coder_settings.input_dir);
-    for(int i = 0; i < files_to_code.size(); i++){
-        processFile(files_to_code[i]);
-        files_offset.remove(files_to_code[i]);
-        files_to_code.removeAt(i);
+    while (!files_to_code.isEmpty()) {
+        const QString path = files_to_code.takeFirst();
+        processFile(path);
+        files_offset.remove(path);
 
     }
 }

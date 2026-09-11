@@ -30,6 +30,7 @@ void MainWindow::StartWork(){
     qDebug() << "начало работы";
     qDebug() << "считывание данных с формы";
 
+
     QString file_mask = ui->fileMaskLe->text();
     qint16 input_files_mode = ui->inputFileActionCmb->currentIndex();
     QDir output_dir = ui->outputPathLe->text();
