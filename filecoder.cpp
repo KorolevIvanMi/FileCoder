@@ -65,6 +65,9 @@ void FileCoder::startProcessing(){
     findFiles(coder_settings.input_dir);
     for(int i = 0; i < files_to_code.size(); i++){
         processFile(files_to_code[i]);
+        files_offset.remove(files_to_code[i]);
+        files_to_code.removeAt(i);
+
     }
 }
 
@@ -76,7 +79,7 @@ void FileCoder::processFile(QString path){
 
     QFileInfo info(path);
 
-    QString output_path = coder_settings.output_dir.absolutePath() + "/" + info.fileName() + "_codded";
+    QString output_path = coder_settings.output_dir.absolutePath() + "/" + "codded_"+ info.fileName() ;
     qDebug() << "Выходная дерриктория: " << output_path;
     QFile outputFile(output_path);
     if(!outputFile.open(QIODevice::WriteOnly)){
@@ -96,5 +99,21 @@ void FileCoder::processFile(QString path){
 }
 
 QByteArray FileCoder::processChank(QByteArray chank){
+    const int n = chank.size();
+    int i = 0;
+    for (; i+8 <= n; i += 8){
+        quint64 value = 0;
+        memcpy(&value, chank.constData()+i, 8);
+        value ^= coder_settings.hex_code_mask;
+        memcpy(chank.data()+i, &value, 8);
+    }
+    if(i<n){
+        const quint64 mask = coder_settings.hex_code_mask;
+        const char *maskBytes = reinterpret_cast<const char*>(&mask);
 
+        for (int k = 0; i < n; ++i, ++k) {
+            chank[i] ^= maskBytes[k];
+        }
+    }
+    return chank;
 }

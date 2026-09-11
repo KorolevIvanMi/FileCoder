@@ -51,7 +51,7 @@ void MainWindow::StartWork(){
 
     file_coder->saveSettigs(file_mask, input_files_mode, output_dir, input_dir,
         repeat_files_names_mode, repeat_coding_files, repeat_timer, hex_code_mask);
-    // file_coder->findFiles(input_dir);
+    file_coder->startProcessing();
 
 
 
