@@ -21,11 +21,11 @@ public:
     void saveSettigs(const QString& file_mask, qint16 input_files_mode, const QDir& output_dir, const QDir& input_dir,
                      qint16 repeat_files_names_mode, bool repeat_coding_files, QTime repeat_timer, quint64 hex_code_mask); // готово
     void findFiles(QDir files_dir); // готово
-    void startProcessing();
+    void startProcessing(); // готово
     void stopProcessing();
     void resumeProccesing();
     void processFile(QString path); // готово
-    QByteArray processChank(QByteArray chank);
+    QByteArray processChank(QByteArray chank); // готово
     void scanDir(QDir path); // готово
 
 
