@@ -18,6 +18,11 @@ void FileCoder::saveSettigs(const QString& file_mask, qint16 input_files_mode, c
     this->coder_settings.repeat_timer = repeat_timer;
     this->coder_settings.hex_code_mask = hex_code_mask;
 }
+void FileCoder::process(){
+    startProcessing();
+    emit finished();
+}
+
 
 void FileCoder::findFiles(QDir files_dir){
 
@@ -122,3 +127,4 @@ QByteArray FileCoder::processChank(QByteArray chank){
     }
     return chank;
 }
+

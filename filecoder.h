@@ -28,7 +28,11 @@ public:
     QByteArray processChank(QByteArray chank); // готово
     void scanDir(QDir files_dir); // готово
 
+public slots:
+    void process();
 
+signals:
+    void finished();
 private:
     Settings coder_settings;
     QMap<QString ,quint64> files_offset;

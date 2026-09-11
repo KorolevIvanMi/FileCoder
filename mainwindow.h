@@ -25,6 +25,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    FileCoder* file_coder;
+    FileCoder *file_coder = nullptr;
+    QThread   *thread     = nullptr;
 };
 #endif // MAINWINDOW_H

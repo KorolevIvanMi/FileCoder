@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    file_coder = new FileCoder();
+
+
 
     ui->setupUi(this);
 
@@ -21,7 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete file_coder;
+    if (thread && thread->isRunning()) {
+        thread->quit();
+        thread->wait(3000);
+    }
     delete ui;
 
 }
@@ -50,10 +54,24 @@ void MainWindow::StartWork(){
              << "\nПериодичность повторений: " << repeat_timer
              << "\nМаска для кодирования файла: " << hex_code_mask;
 
+    file_coder = new FileCoder();
+    thread     = new QThread();
+
     file_coder->saveSettigs(file_mask, input_files_mode, output_dir, input_dir,
-        repeat_files_names_mode, repeat_coding_files, repeat_timer, hex_code_mask);
-    file_coder->startProcessing();
+                            repeat_files_names_mode, repeat_coding_files,
+                            repeat_timer, hex_code_mask);
+
+    file_coder->moveToThread(thread);
+
+    connect(thread, &QThread::started, file_coder, &FileCoder::process);
+    connect(file_coder, &FileCoder::finished, thread, &QThread::quit);
 
 
+    connect(file_coder, &FileCoder::finished,file_coder, &QObject::deleteLater);
+    connect(thread, &QThread::finished,thread, &QObject::deleteLater);
+
+    connect(thread, &QThread::finished, this, [this]() { file_coder = nullptr;thread = nullptr;});
+
+    thread->start();
 
 }
