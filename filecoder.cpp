@@ -4,6 +4,20 @@
 #include <QThread>
 #include <QRegularExpression>
 
+
+
+QString uniquePath(const QString& dir, const QString& file_name, const QString& suffix){
+    QString path = QDir(dir).absoluteFilePath(file_name + "." + suffix);
+    if(!QFile::exists(path)) return path;
+    for(int i = 0; ; i++){
+        path = QDir(dir).absoluteFilePath(
+            QString("%1/%2_%3.%4").arg(dir,file_name,QString::number(i),suffix)
+        );
+        if(!QFile::exists(path)) return path;
+    }
+}
+
+
 FileCoder::FileCoder(QObject *parent)
     : QObject{parent}
 {}
@@ -22,6 +36,8 @@ void FileCoder::process(){
     startProcessing();
     emit finished();
 }
+
+
 
 
 void FileCoder::findFiles(QDir files_dir){
@@ -94,11 +110,19 @@ void FileCoder::processFile(QString path){
     }
 
     QFileInfo info(path);
+    QString output_path = "";
+    QIODevice::OpenMode open_mode_flag;
+    if (coder_settings.repeat_files_names_mode == 0){
+        open_mode_flag = QIODevice::Truncate | QIODevice::WriteOnly;
+        output_path = coder_settings.output_dir.absolutePath() + "/" + info.fileName() ;
+    } else if (coder_settings.repeat_files_names_mode == 1){
+        open_mode_flag = QIODevice::WriteOnly;
+        output_path = uniquePath(coder_settings.output_dir.absolutePath(), info.baseName(), info.completeSuffix() );
+    }
 
-    QString output_path = coder_settings.output_dir.absolutePath() + "/" + "codded_"+ info.fileName() ;
     qDebug() << "Выходная дерриктория: " << output_path;
     QFile outputFile(output_path);
-    if(!outputFile.open(QIODevice::WriteOnly)){
+    if(!outputFile.open(open_mode_flag)){
         qWarning() << "Не создать выход:" << outputFile.errorString();
     }
 
