@@ -125,7 +125,7 @@
          <widget class="QComboBox" name="workFormatCmb">
           <item>
            <property name="text">
-            <string>Разовые запуск</string>
+            <string>Разовый запуск</string>
            </property>
           </item>
           <item>

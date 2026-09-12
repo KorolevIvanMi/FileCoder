@@ -76,6 +76,12 @@ void FileCoder::startProcessing(){
     while (!files_to_code.isEmpty()) {
         const QString path = files_to_code.takeFirst();
         processFile(path);
+        if (coder_settings.input_files_mode == 0){
+            if(!QFile::remove(path)){
+                qWarning() << "Не удалить файл:" << path;
+            }
+        }
+
         files_offset.remove(path);
 
     }
