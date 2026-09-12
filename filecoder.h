@@ -26,7 +26,6 @@ public:
     void resumeProccesing();
     void processFile(QString path); // готово
     QByteArray processChank(QByteArray chank); // готово
-    void scanDir(QDir files_dir); // готово
 
 public slots:
     void process();

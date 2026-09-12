@@ -56,31 +56,12 @@ void FileCoder::findFiles(QDir files_dir){
             files_offset[info.absoluteFilePath()] = 0;
             qDebug() << "Файл: " << info.fileName();
         } else {
-            scanDir(info.absoluteFilePath());
+            findFiles(info.absoluteFilePath());
         }
     }
 
 }
 
-void FileCoder::scanDir(QDir files_dir){
-    QFileInfoList files_dirs = files_dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::NoSymLinks);
-    QString dir = files_dir.absolutePath();
-
-    for (const QFileInfo &info : std::as_const(files_dirs)){
-
-        if (info.isFile()){
-            if (!coder_settings.file_mask.isEmpty()) {
-                QRegularExpression re(QRegularExpression::wildcardToRegularExpression(coder_settings.file_mask));
-                if (!re.match(info.fileName()).hasMatch()) continue;
-            }
-            files_to_code.append(info.absoluteFilePath());
-            files_offset[info.absoluteFilePath()] = 0;
-            qDebug() << "Файл: " << info.fileName();
-        } else {
-            scanDir(info.absoluteFilePath());
-        }
-    }
-}
 
 void FileCoder::startProcessing(){
     files_to_code.clear();
