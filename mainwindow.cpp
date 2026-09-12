@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ui->setupUi(this);
+    ui->startProcessBtn->setEnabled(false);
 
     connect(ui->startProcessBtn, &QPushButton::released, this, &MainWindow::StartWork);
 
@@ -70,7 +71,9 @@ void MainWindow::StartWork(){
     connect(file_coder, &FileCoder::finished,file_coder, &QObject::deleteLater);
     connect(thread, &QThread::finished,thread, &QObject::deleteLater);
 
-    connect(thread, &QThread::finished, this, [this]() { file_coder = nullptr;thread = nullptr;});
+    connect(thread, &QThread::finished, this, [this]() {
+        file_coder = nullptr;
+        thread = nullptr;});
 
     thread->start();
 
