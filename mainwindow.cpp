@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->startProcessBtn->setEnabled(false);
 
     connect(ui->startProcessBtn, &QPushButton::released, this, &MainWindow::StartWork);
-
+    connect(ui->modificationValueLe, &QLineEdit::textChanged, this, &MainWindow::checkHexMusk);
 
 
 }
@@ -77,4 +77,25 @@ void MainWindow::StartWork(){
 
     thread->start();
 
+}
+
+void MainWindow::checkHexMusk(){
+    QString mask = ui->modificationValueLe->text();
+    const QString availableSimbols = "1234567890ABCDEFabcdef";
+    bool is_okay = true;
+    if (mask.size() == 16){
+        for(QChar symbol : mask){
+            if(availableSimbols.contains(symbol) == false ){
+                is_okay = false;
+                break;
+            }
+        }
+    } else {
+        is_okay = false;
+    }
+    if(is_okay){
+        ui->startProcessBtn->setEnabled(true);
+    }else{
+        ui->startProcessBtn->setEnabled(false);
+    }
 }

@@ -22,7 +22,8 @@ public:
     ~MainWindow() override;
 
     void StartWork();
-
+public slots:
+    void checkHexMusk();
 private:
     Ui::MainWindow *ui;
     FileCoder *file_coder = nullptr;
