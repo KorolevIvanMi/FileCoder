@@ -33,6 +33,11 @@ void FileCoder::saveSettigs(const QString& file_mask, qint16 input_files_mode, c
     this->coder_settings.hex_code_mask = hex_code_mask;
 }
 void FileCoder::process(){
+    m_mutex.lock();
+    while (isPaused) {
+        m_pauseCondition.wait(&m_mutex);
+    }
+    m_mutex.unlock();
     startProcessing();
     emit finished();
 }
@@ -72,6 +77,7 @@ void FileCoder::startProcessing(){
     findFiles(coder_settings.input_dir);
     while (!files_to_code.isEmpty()) {
         const QString path = files_to_code.takeFirst();
+
         processFile(path);
         if (coder_settings.input_files_mode == 0){
             if(!QFile::remove(path)){
@@ -106,8 +112,15 @@ void FileCoder::processFile(QString path){
     if(!outputFile.open(open_mode_flag)){
         qWarning() << "Не создать выход:" << outputFile.errorString();
     }
-
+    int i = 0;
     while (!inputFile.atEnd()){
+        m_mutex.lock();
+        while (isPaused) {
+            m_pauseCondition.wait(&m_mutex);
+        }
+        m_mutex.unlock();
+        QThread::msleep(500);
+        qDebug() << "Обработка чанка" << ++i;
         QByteArray chank = inputFile.read(CHANK_SIZE);
         QByteArray codded_chunk = processChank(chank);
 
@@ -139,3 +152,16 @@ QByteArray FileCoder::processChank(QByteArray chank){
     return chank;
 }
 
+void FileCoder::pause(){
+    qDebug() << "Пауза нажата";
+    QMutexLocker locker(&m_mutex);
+    isPaused = true;
+}
+
+void FileCoder::resume(){
+    QMutexLocker locker(&m_mutex);
+    if (isPaused) {
+        isPaused = false;
+        m_pauseCondition.wakeAll();
+    }
+}

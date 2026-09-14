@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     repeat_timer = new QTimer(this);
     ui->startProcessBtn->setEnabled(false);
+    ui->pauseBtn->setEnabled(false);
+    ui->resumeBtn->setEnabled(false);
+
     ui->repeatTimeTe->setEnabled(false);
 
     connect(ui->startProcessBtn, &QPushButton::released, this, &MainWindow::writeSettings);
@@ -54,6 +57,9 @@ void MainWindow::StartWork(){
                             settings.repeat_files_names_mode, settings.repeat_coding_files,
                             settings.repeat_time, settings.hex_code_mask);
 
+    connect(ui->pauseBtn, &QPushButton::released,file_coder, &FileCoder::pause, Qt::DirectConnection);
+    connect(ui->resumeBtn, &QPushButton::released, file_coder, &FileCoder::resume, Qt::DirectConnection);
+
     file_coder->moveToThread(thread);
 
     connect(thread, &QThread::started, file_coder, &FileCoder::process);
@@ -66,9 +72,13 @@ void MainWindow::StartWork(){
     connect(thread, &QThread::finished, this, [this]() {
         file_coder = nullptr;
         thread = nullptr;
-        ui->startProcessBtn->setEnabled(true);});
+        ui->startProcessBtn->setEnabled(true);
+        ui->pauseBtn->setEnabled(false);
+        ui->resumeBtn->setEnabled(false);});
 
     ui->startProcessBtn->setEnabled(false);
+    ui->pauseBtn->setEnabled(true);
+    ui->resumeBtn->setEnabled(true);
     thread->start();
 
 }
