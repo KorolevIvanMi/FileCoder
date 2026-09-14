@@ -114,7 +114,6 @@ void FileCoder::processFile(QString path){
             m_pauseCondition.wait(&m_mutex);
         }
         m_mutex.unlock();
-        QThread::msleep(500);
         qDebug() << "Обработка чанка" << ++i;
         QByteArray chank = inputFile.read(CHANK_SIZE);
         QByteArray codded_chunk = processChank(chank);
