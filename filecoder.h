@@ -11,7 +11,7 @@
 
 #include "settings.h"
 
-#define CHANK_SIZE 16
+#define CHANK_SIZE 1024
 
 
 class FileCoder : public QObject
@@ -24,8 +24,6 @@ public:
                      qint16 repeat_files_names_mode, bool repeat_coding_files, QTime repeat_timer, quint64 hex_code_mask); // готово
     void findFiles(QDir files_dir); // готово
     void startProcessing(); // готово
-    // void stopProcessing();
-    // void resumeProccesing();
     void processFile(QString path); // готово
     QByteArray processChank(QByteArray chank); // готово
 
@@ -38,7 +36,6 @@ signals:
     void finished();
 private:
     Settings coder_settings;
-    QMap<QString ,quint64> files_offset;
     bool isPaused = false;
     QList<QString> files_to_code;
     QMutex m_mutex;

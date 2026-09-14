@@ -58,7 +58,6 @@ void FileCoder::findFiles(QDir files_dir){
                 if (!re.match(info.fileName()).hasMatch()) continue;
             }
             files_to_code.append(info.absoluteFilePath());
-            files_offset[info.absoluteFilePath()] = 0;
             qDebug() << "Файл: " << info.fileName();
         } else {
             findFiles(info.absoluteFilePath());
@@ -70,10 +69,8 @@ void FileCoder::findFiles(QDir files_dir){
 
 void FileCoder::startProcessing(){
     files_to_code.clear();
-    files_offset.clear();
     isPaused = false;
 
-    // QThread::msleep(5000);
     findFiles(coder_settings.input_dir);
     while (!files_to_code.isEmpty()) {
         const QString path = files_to_code.takeFirst();
@@ -84,8 +81,6 @@ void FileCoder::startProcessing(){
                 qWarning() << "Не удалить файл:" << path;
             }
         }
-
-        files_offset.remove(path);
 
     }
 }

@@ -5,6 +5,7 @@
 #include "filecoder.h"
 #include "settings.h"
 
+
 #include <QMainWindow>
 #include <QThread>
 #include <QTimer>
@@ -28,6 +29,7 @@ public slots:
     void checkHexMusk();
     void writeSettings();
     void checkAppMod();
+
 private:
     Ui::MainWindow *ui;
     FileCoder* file_coder = nullptr;
@@ -35,5 +37,6 @@ private:
 
     QTimer* repeat_timer = nullptr;
     Settings settings;
+    // MyDialog* mydlg;
 };
 #endif // MAINWINDOW_H

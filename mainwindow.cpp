@@ -1,9 +1,12 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "processenddialog.h"
+
 #include "QDebug"
 #include <QString>
 #include <QDir>
 #include <QTime>
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,7 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ui->setupUi(this);
+
     repeat_timer = new QTimer(this);
+    // mydlg = new MyDialog();
+
     ui->startProcessBtn->setEnabled(false);
     ui->pauseBtn->setEnabled(false);
     ui->resumeBtn->setEnabled(false);
@@ -74,7 +80,11 @@ void MainWindow::StartWork(){
         thread = nullptr;
         ui->startProcessBtn->setEnabled(true);
         ui->pauseBtn->setEnabled(false);
-        ui->resumeBtn->setEnabled(false);});
+        ui->resumeBtn->setEnabled(false);
+        ProcessEndDialog* dlg = new ProcessEndDialog();
+        dlg->setAttribute(Qt::WA_DeleteOnClose);
+        dlg->show();
+    });
 
     ui->startProcessBtn->setEnabled(false);
     ui->pauseBtn->setEnabled(true);
