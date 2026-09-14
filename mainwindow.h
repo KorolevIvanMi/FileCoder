@@ -3,9 +3,11 @@
 
 
 #include "filecoder.h"
+#include "settings.h"
 
 #include <QMainWindow>
 #include <QThread>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,9 +26,14 @@ public:
     void StartWork();
 public slots:
     void checkHexMusk();
+    void writeSettings();
+    void checkAppMod();
 private:
     Ui::MainWindow *ui;
-    FileCoder *file_coder = nullptr;
-    QThread   *thread     = nullptr;
+    FileCoder* file_coder = nullptr;
+    QThread* thread     = nullptr;
+
+    QTimer* repeat_timer = nullptr;
+    Settings settings;
 };
 #endif // MAINWINDOW_H

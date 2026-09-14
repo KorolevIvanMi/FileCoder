@@ -12,7 +12,7 @@ struct Settings{
     QDir input_dir;
     qint16 repeat_files_names_mode;
     bool repeat_coding_files;
-    QTime repeat_timer;
+    QTime repeat_time;
     quint64 hex_code_mask;
 
 };

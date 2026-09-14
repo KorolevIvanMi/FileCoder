@@ -147,7 +147,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QTimeEdit" name="repeatTimeTe"/>
+         <widget class="QTimeEdit" name="repeatTimeTe">
+          <property name="displayFormat">
+           <string>HH:mm:ss</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

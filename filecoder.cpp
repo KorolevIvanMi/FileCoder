@@ -29,7 +29,7 @@ void FileCoder::saveSettigs(const QString& file_mask, qint16 input_files_mode, c
     this->coder_settings.output_dir = output_dir;
     this->coder_settings.input_dir = input_dir;
     this->coder_settings.repeat_files_names_mode = repeat_files_names_mode;
-    this->coder_settings.repeat_timer = repeat_timer;
+    this->coder_settings.repeat_time = repeat_timer;
     this->coder_settings.hex_code_mask = hex_code_mask;
 }
 void FileCoder::process(){
