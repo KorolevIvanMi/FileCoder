@@ -35,6 +35,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::StartWork(){
+
     if (thread && thread->isRunning()) {
         qDebug() << "Уже идёт, пропускаю";
         return;
@@ -64,8 +65,10 @@ void MainWindow::StartWork(){
 
     connect(thread, &QThread::finished, this, [this]() {
         file_coder = nullptr;
-        thread = nullptr;});
+        thread = nullptr;
+        ui->startProcessBtn->setEnabled(true);});
 
+    ui->startProcessBtn->setEnabled(false);
     thread->start();
 
 }
