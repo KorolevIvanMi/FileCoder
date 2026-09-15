@@ -1,6 +1,8 @@
 #include "processenddialog.h"
 #include "ui_processenddialog.h"
 
+#include <QPushButton>
+
 ProcessEndDialog::ProcessEndDialog(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ProcessEndDialog)
