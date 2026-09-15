@@ -41,8 +41,6 @@ private:
     QMutex m_mutex;
     QWaitCondition m_pauseCondition;
 
-
-signals:
 };
 
 #endif // FILECODER_H
