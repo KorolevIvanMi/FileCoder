@@ -109,12 +109,13 @@ void FileCoder::processFile(QString path){
     }
     int i = 0;
     while (!inputFile.atEnd()){
+        // QThread::sleep(2);
         m_mutex.lock();
         while (isPaused) {
             m_pauseCondition.wait(&m_mutex);
         }
         m_mutex.unlock();
-        qDebug() << "Обработка чанка" << ++i;
+        // qDebug() << "Обработка чанка" << ++i;
         QByteArray chank = inputFile.read(CHANK_SIZE);
         QByteArray codded_chunk = processChank(chank);
 
@@ -153,6 +154,7 @@ void FileCoder::pause(){
 }
 
 void FileCoder::resume(){
+    qDebug() << "Пауза отжата";
     QMutexLocker locker(&m_mutex);
     if (isPaused) {
         isPaused = false;
