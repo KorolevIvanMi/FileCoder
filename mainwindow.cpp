@@ -108,7 +108,7 @@ void MainWindow::checkHexMusk(){
     } else {
         is_okay = false;
     }
-    if(is_okay){
+    if(is_okay && !thread ){
         ui->startProcessBtn->setEnabled(true);
     }else{
         ui->startProcessBtn->setEnabled(false);
