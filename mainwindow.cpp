@@ -82,6 +82,7 @@ void MainWindow::StartWork(){
         ui->startProcessBtn->setEnabled(true);
         ui->pauseBtn->setEnabled(false);
         ui->resumeBtn->setEnabled(false);
+        qDebug() << "Процесс завершён";
         ProcessEndDialog* dlg = new ProcessEndDialog();
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->show();
